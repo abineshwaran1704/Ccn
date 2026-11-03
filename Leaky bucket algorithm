@@ -1,0 +1,37 @@
+
+bucket_size = 5
+output_rate = 1
+bucket = 0
+
+n = int(input("Enter number of incoming packets: "))
+
+for i in range(n):
+    incoming = int(input("Enter incoming packets: "))
+
+    if bucket + incoming <= bucket_size:
+        bucket += incoming
+        print("Packets accepted:", incoming)
+    else:
+        accepted = bucket_size - bucket
+        dropped = incoming - accepted
+        bucket = bucket_size
+
+        print("Packets accepted:", accepted)
+        print("Packets dropped:", dropped)
+
+    print("Packets in bucket:", bucket)
+
+    # Leak packets at a constant rate
+    sent = min(bucket, output_rate)
+    bucket -= sent
+
+    print("Packets transmitted:", sent)
+    print("Remaining packets:", bucket)
+    print("----------------------")
+
+# Empty remaining packets
+while bucket > 0:
+    sent = min(bucket, output_rate)
+    bucket -= sent
+    print("Packets transmitted:", sent)
+    print("Remaining packets:", bucket)
